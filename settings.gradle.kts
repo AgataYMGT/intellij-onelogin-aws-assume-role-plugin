@@ -1,1 +1,1 @@
-rootProject.name = "intellij-onelogin-aws-assume-role-plugin"
+rootProject.name = "onelogin-aws-assume-role"
