@@ -14,24 +14,9 @@ class OneloginAwsAssumeRoleSettingsStorage(
   var isEnabled: Boolean,
 
   /**
-   * OneLogin SDK のクライアント ID
+   * OneLogin SDK のプロパティファイルパス
    */
-  var oneloginSdkClientId: String,
-
-  /**
-   * OneLogin SDK のクライアントシークレット
-   */
-  var oneloginSdkClientSecret: String,
-
-  /**
-   * OneLogin のリージョン
-   */
-  var oneloginSdkRegion: OneloginRegion = OneloginRegion.US,
-
-  /**
-   * OneLogin で MFA 設定をしている場合に MFA をスキップできる送信元 IP アドレス
-   */
-  var oneloginSdkIp: String,
+  var oneloginSdkPropertyPath: String
 ) : PersistentStateComponent<OneloginAwsAssumeRoleSettingsStorage> {
 
   override fun getState(): OneloginAwsAssumeRoleSettingsStorage = this
