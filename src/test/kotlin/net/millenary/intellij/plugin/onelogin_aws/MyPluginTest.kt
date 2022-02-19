@@ -1,4 +1,4 @@
-package com.github.agataymgt.intellijoneloginawsassumeroleplugin
+package net.millenary.intellij.plugin.onelogin_aws
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.psi.xml.XmlFile
