@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.layout.panel
 import net.millenary.intellij.plugin.onelogin_aws.setting.form.createGeneralPanel
+import net.millenary.intellij.plugin.onelogin_aws.setting.form.createOneloginAccountDetails
 import net.millenary.intellij.plugin.onelogin_aws.setting.form.createOneloginSdkPanel
 
 class OneloginAwsAssumeRoleConfiguration(project: Project) : BoundConfigurable("OneLogin AWS Assume Role") {
@@ -19,6 +20,7 @@ class OneloginAwsAssumeRoleConfiguration(project: Project) : BoundConfigurable("
     blockRow {
       createGeneralPanel(settings)
       createOneloginSdkPanel(settings)
+      createOneloginAccountDetails(settings)
     }
   }
 }

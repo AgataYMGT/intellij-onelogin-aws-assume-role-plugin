@@ -27,27 +27,29 @@ sealed class SettingAction<T>(
   /**
    * チェックボックスのアクション(論理値)
    */
-  abstract class CheckboxAction(actionName: String, settings: OneloginAwsAssumeRoleSettings) : SettingAction<Boolean>(
-    actionName = actionName,
-    defaultValue = true,
-    settingProperty = settings::isEnabled
-  )
+  abstract class CheckboxAction(actionName: String, settingProperty: KMutableProperty0<Boolean>) :
+    SettingAction<Boolean>(
+      actionName = actionName,
+      defaultValue = true,
+      settingProperty = settingProperty
+    )
 
   /**
    * テキスト入力のアクション(文字列)
    */
-  abstract class InputTextAction(actionName: String, settings: OneloginAwsAssumeRoleSettings) : SettingAction<String>(
-    actionName = actionName,
-    defaultValue = "",
-    settingProperty = settings::oneloginSdkPropertyPath
-  )
+  abstract class InputTextAction(actionName: String, settingProperty: KMutableProperty0<String>) :
+    SettingAction<String>(
+      actionName = actionName,
+      defaultValue = "",
+      settingProperty = settingProperty
+    )
 
   /**
    * プラグインの有効化
    */
   data class Enabled(private val settings: OneloginAwsAssumeRoleSettings) : CheckboxAction(
     actionName = "Enable OneLogin AWS Assume Role Plugin",
-    settings = settings
+    settingProperty = settings::isEnabled
   )
 
   /**
@@ -55,9 +57,17 @@ sealed class SettingAction<T>(
    */
   data class OneloginSdkPropertiesPath(private val settings: OneloginAwsAssumeRoleSettings) : InputTextAction(
     actionName = "Path of onelogin.sdk.properties",
-    settings = settings
+    settingProperty = settings::oneloginSdkPropertiesPath
   ) {
 
     override val defaultValue: String = Paths.get(System.getProperty("user.home"), "onelogin.sdk.properties").toString()
   }
+
+  /**
+   * OneLogin の インスタンスサブドメイン
+   */
+  data class OneloginInstanceSubDomain(private val settings: OneloginAwsAssumeRoleSettings) : InputTextAction(
+    actionName = "Instance Sub-domain",
+    settingProperty = settings::oneloginSdkInstanceSubDomain
+  )
 }

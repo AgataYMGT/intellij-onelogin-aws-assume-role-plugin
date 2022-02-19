@@ -23,9 +23,21 @@ fun Row.createOneloginSdkPanel(settings: OneloginAwsAssumeRoleSettings) = titled
 
   row {
     label(sdkPathAction.actionName)
-    textFieldWithBrowseButton(value = settings.oneloginSdkPropertyPath) { chosenFile ->
-      settings.oneloginSdkPropertyPath = chosenFile.path
-      settings.oneloginSdkPropertyPath
+    textFieldWithBrowseButton(value = settings.oneloginSdkPropertiesPath) { chosenFile ->
+      settings.oneloginSdkPropertiesPath = chosenFile.path
+      settings.oneloginSdkPropertiesPath
     }
+  }
+}
+
+/**
+ * OneLogin アカウント設定 UI パネル
+ */
+fun Row.createOneloginAccountDetails(settings: OneloginAwsAssumeRoleSettings) = titledRow("OneLogin Account Details") {
+  val subDomainAction = SettingAction.OneloginInstanceSubDomain(settings)
+
+  row {
+    label(subDomainAction.actionName)
+    textField(subDomainAction.settingProperty)
   }
 }

@@ -31,8 +31,14 @@ class OneloginAwsAssumeRoleSettings : PersistentStateComponent<OneloginAwsAssume
   /**
    * OneLogin SDK のプロパティファイルパス
    */
-  var oneloginSdkPropertyPath: String by object :
+  var oneloginSdkPropertiesPath: String by object :
     LoggingProperty<OneloginAwsAssumeRoleSettings, String>(SettingAction.OneloginSdkPropertiesPath(this).defaultValue) {}
+
+  /**
+   * OneLogin のインスタンスサブドメイン
+   */
+  var oneloginSdkInstanceSubDomain: String by object :
+    LoggingProperty<OneloginAwsAssumeRoleSettings, String>(SettingAction.OneloginInstanceSubDomain(this).defaultValue) {}
 
   override fun getState(): OneloginAwsAssumeRoleSettings = this
 
