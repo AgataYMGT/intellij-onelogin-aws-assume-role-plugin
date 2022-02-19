@@ -1,18 +1,16 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.agataymgt.intellijoneloginawsassumeroleplugin</id>
-    <name>intellij-onelogin-aws-assume-role-plugin</name>
+    <id>net.millenary.intellij.plugin.onelogin_aws</id>
+    <name>OneLogin AWS Assume Role</name>
     <vendor>agataymgt</vendor>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.agataymgt.intellijoneloginawsassumeroleplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.agataymgt.intellijoneloginawsassumeroleplugin.services.MyProjectService"/>
+        <projectService
+            serviceImplementation="net.millenary.intellij.plugin.onelogin_aws.setting.OneloginAwsAssumeRoleSettings"/>
+        <projectConfigurable id="settings.onelogin_aws_assume_role_configuration"
+                             instance="net.millenary.intellij.plugin.onelogin_aws.setting.OneloginAwsAssumeRoleConfiguration"
+                             dynamic="true"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.agataymgt.intellijoneloginawsassumeroleplugin.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
