@@ -6,7 +6,7 @@ import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
 
 @State(name = "OneloginAwsAssumeRoleSettings", storages = [Storage("onelogin-aws-assume-role-settings.xml")])
-class OneloginAwsAssumeRoleSettingsStorage(
+class OneloginAwsAssumeRoleSettings(
 
   /**
    * プラグインが有効か
@@ -17,11 +17,11 @@ class OneloginAwsAssumeRoleSettingsStorage(
    * OneLogin SDK のプロパティファイルパス
    */
   var oneloginSdkPropertyPath: String
-) : PersistentStateComponent<OneloginAwsAssumeRoleSettingsStorage> {
+) : PersistentStateComponent<OneloginAwsAssumeRoleSettings> {
 
-  override fun getState(): OneloginAwsAssumeRoleSettingsStorage = this
+  override fun getState(): OneloginAwsAssumeRoleSettings = this
 
-  override fun loadState(state: OneloginAwsAssumeRoleSettingsStorage) {
+  override fun loadState(state: OneloginAwsAssumeRoleSettings) {
     XmlSerializerUtil.copyBean(state, this)
   }
 }
