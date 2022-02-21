@@ -32,7 +32,7 @@ class OneloginSamlAssertionMfaDialog(
   init {
     title = "OneLogin SAML Assertion: MFA Required"
     setOKButtonText("Next")
-    setSize(480, 200)
+    setSize(480, size.height)
 
     init()
   }

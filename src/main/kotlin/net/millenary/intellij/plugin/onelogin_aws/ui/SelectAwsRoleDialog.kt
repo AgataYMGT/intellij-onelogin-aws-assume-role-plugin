@@ -37,7 +37,7 @@ class SelectAwsRoleDialog(
   init {
     title = "Select Available AWS Role"
     setOKButtonText("Next")
-    setSize(480, 200)
+    setSize(480, size.height)
 
     init()
   }

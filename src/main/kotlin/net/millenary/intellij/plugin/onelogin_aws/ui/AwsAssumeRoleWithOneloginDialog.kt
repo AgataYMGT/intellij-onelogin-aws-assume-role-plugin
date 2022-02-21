@@ -26,7 +26,7 @@ class AwsAssumeRoleWithOneloginDialog(project: Project) : DialogWrapper(project,
 
     title = "AWS Assume Role With OneLogin"
     setOKButtonText("Next")
-    setSize(480, 200)
+    setSize(480, size.height)
 
     init()
   }
