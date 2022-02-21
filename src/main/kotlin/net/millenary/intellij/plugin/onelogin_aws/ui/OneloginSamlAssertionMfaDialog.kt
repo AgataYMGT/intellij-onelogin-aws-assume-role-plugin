@@ -14,7 +14,7 @@ class OneloginSamlAssertionMfaDialog(
 
   project: Project,
 
-  private val mfaDevices: List<Device>,
+  mfaDevices: List<Device>,
 
   val mfaUserInputs: OneloginMfaUserInputs,
 ) : DialogWrapper(project, true) {
@@ -42,14 +42,13 @@ class OneloginSamlAssertionMfaDialog(
       row {
         label("MFA is required, authenticate using one of these devices")
       }
-      deviceSelectionComboBox(mfaDevices)
+      deviceSelectionComboBox()
       oneTimeToken(mfaUserInputs)
     }
   }
 
-  private fun Row.deviceSelectionComboBox(mfaDevices: List<Device>): Row {
-    val mfaDeviceByType = mfaDevices.associate { device -> device.type to device.id }
-    val comboBoxModel = DefaultComboBoxModel(mfaDeviceByType.keys.toTypedArray())
+  private fun Row.deviceSelectionComboBox(): Row {
+    val comboBoxModel = DefaultComboBoxModel(mfaDeviceIdsByType.keys.toTypedArray())
 
     return row {
       label("Device")

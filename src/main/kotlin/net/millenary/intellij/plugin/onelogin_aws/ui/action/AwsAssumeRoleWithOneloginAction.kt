@@ -3,6 +3,9 @@ package net.millenary.intellij.plugin.onelogin_aws.ui.action
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
+import com.onelogin.saml2.authn.SamlResponse
+import com.onelogin.saml2.http.HttpRequest
+import com.onelogin.saml2.settings.Saml2Settings
 import com.onelogin.sdk.conn.Client
 import com.onelogin.sdk.model.MFA
 import com.onelogin.sdk.model.SAMLEndpointResponse
@@ -10,15 +13,22 @@ import net.millenary.intellij.plugin.onelogin_aws.SamlAssertionException
 import net.millenary.intellij.plugin.onelogin_aws.setting.OneloginAwsAssumeRoleSettings
 import net.millenary.intellij.plugin.onelogin_aws.ui.AwsAssumeRoleWithOneloginDialog
 import net.millenary.intellij.plugin.onelogin_aws.ui.OneloginSamlAssertionMfaDialog
+import net.millenary.intellij.plugin.onelogin_aws.ui.SelectAwsRoleDialog
 import net.millenary.intellij.plugin.onelogin_aws.ui.data.AwsAssumeRoleWithOneloginProperties
 import net.millenary.intellij.plugin.onelogin_aws.ui.data.OneloginMfaUserInputs
 import net.millenary.intellij.plugin.onelogin_aws.ui.data.OneloginSdkProperties
+import net.millenary.intellij.plugin.onelogin_aws.ui.data.SelectAwsRoleUserInputs
 import java.nio.file.Paths
 
 /**
  * [AwsAssumeRoleWithOneloginDialog] を表示するトリガーアクション
  */
 class AwsAssumeRoleWithOneloginAction : AnAction() {
+
+  companion object {
+
+    const val SAML_AWS_ROLE_ATTRIBUTE_NAME = "https://aws.amazon.com/SAML/Attributes/Role"
+  }
 
   override fun actionPerformed(e: AnActionEvent) {
     val project = requireNotNull(e.project)
@@ -64,15 +74,42 @@ class AwsAssumeRoleWithOneloginAction : AnAction() {
     val mfaUserInputs = OneloginMfaUserInputs()
     if (mfa != null) {
       samlAssertionResponse =
-        samlAssertionWithMfa(mfa, project, mfaUserInputs, samlAssertionResponse, oneloginClient, accountProperties)
+        samlAssertionWithMfa(mfa, project, mfaUserInputs, oneloginClient, accountProperties)
     }
+
+    selectAwsRole(samlAssertionResponse, project)
+  }
+
+  private fun selectAwsRole(
+    samlAssertionResponse: SAMLEndpointResponse,
+    project: Project
+  ) {
+    val awsRoleAttributes = parseAwsRoleAttributes(samlAssertionResponse)
+    val selectRoleDialog = SelectAwsRoleDialog(
+      project = project,
+      userInputs = SelectAwsRoleUserInputs(),
+      samlAwsRoleAttributes = awsRoleAttributes
+    )
+
+    selectRoleDialog.show()
+  }
+
+  private fun parseAwsRoleAttributes(samlAssertionResponse: SAMLEndpointResponse): List<String> {
+    val simulatedRequest = HttpRequest("http://example.com", "")
+      .addParameter("SAMLResponse", samlAssertionResponse.samlResponse)
+    val samlResponseObj = SamlResponse(Saml2Settings(), simulatedRequest)
+    val samlResponseAttributes = samlResponseObj.attributes
+    if (!samlResponseAttributes.containsKey(SAML_AWS_ROLE_ATTRIBUTE_NAME)) {
+      throw SamlAssertionException("SAMLResponse from Identity Provider does not contain AWS Roles")
+    }
+
+    return samlResponseAttributes[SAML_AWS_ROLE_ATTRIBUTE_NAME].orEmpty()
   }
 
   private fun samlAssertionWithMfa(
     mfa: MFA,
     project: Project,
     mfaUserInputs: OneloginMfaUserInputs,
-    samlAssertionResponse: SAMLEndpointResponse?,
     oneloginClient: Client,
     accountProperties: AwsAssumeRoleWithOneloginProperties
   ): SAMLEndpointResponse {
