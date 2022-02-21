@@ -13,4 +13,11 @@
                              instance="net.millenary.intellij.plugin.onelogin_aws.setting.OneloginAwsAssumeRoleConfiguration"
                              dynamic="true"/>
     </extensions>
+    <actions>
+        <action id="AwsAssumeRoleWithOneloginAction"
+                class="net.millenary.intellij.plugin.onelogin_aws.ui.action.AwsAssumeRoleWithOneloginAction"
+                text="AWS Assume Role with OneLogin">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>

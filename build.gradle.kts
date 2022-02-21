@@ -25,6 +25,11 @@ repositories {
 }
 
 dependencies {
+  // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+  implementation("org.apache.logging.log4j:log4j-core:2.17.1")
+  // https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j
+  implementation("org.slf4j:slf4j-reload4j:1.7.36")
+
   /* OneLogin SDK */
   // https://mvnrepository.com/artifact/com.onelogin/onelogin-java-sdk
   implementation("com.onelogin:onelogin-java-sdk:2.0.0")
